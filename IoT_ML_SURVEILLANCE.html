@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>CHAYA | Digital Twin Simulation</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #f8fafc;
+      color: #1e293b;
+      position: relative;
+      overflow-x: hidden;
+    }
+    
+    /* Ambient Background Blobs for Glassmorphism */
+    .ambient-blob {
+        position: fixed;
+        border-radius: 50%;
+        filter: blur(100px);
+        z-index: -1;
+        opacity: 0.3;
+    }
+    .blob-1 { top: -10%; left: -10%; width: 50vw; height: 50vw; background: #3b82f6; }
+    .blob-2 { top: 20%; right: -10%; width: 40vw; height: 40vw; background: #ec4899; }
+    .blob-3 { bottom: 10%; left: 20%; width: 60vw; height: 60vw; background: rgba(59, 130, 246, 0.3); }
+
+    .glass-panel {
+        background: rgba(255, 255, 255, 0.7);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border: 1px solid rgba(255, 255, 255, 0.5);
+        box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.05);
+        border-radius: 20px;
+    }
+
+    #map { height: 320px; z-index: 1; border-radius: 12px; border: 1px solid rgba(0,0,0,0.1); }
+    .charts-grid { display: grid; grid-template-columns: repeat(1, 1fr); gap: 16px; }
+    @media(min-width: 1024px) { .charts-grid { grid-template-columns: repeat(2, 1fr); } }
+    .stacked-chart { height: 180px; width: 100%; }
+    .node-list { max-height: 280px; overflow-y: auto; padding-right: 8px; }
+    
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+    ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+  </style>
+</head>
+<body class="p-4 lg:p-8">
+  
+  <div class="ambient-blob blob-1"></div>
+  <div class="ambient-blob blob-2"></div>
+  <div class="ambient-blob blob-3"></div>
+
+  <div class="max-w-7xl mx-auto">
+    <header class="mb-6 glass-panel p-6 flex flex-col md:flex-row md:items-center justify-between">
+      <div>
+        <h1 class="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-pink-500">CHAYA Digital Twin Platform</h1>
+        <p class="text-sm text-slate-500 mt-1">Live In-Situ Telemetry & AI Inference Engine Dashboard</p>
+      </div>
+      <div class="text-xs text-slate-400 mt-3 md:mt-0 text-right">
+        Chief AI Scientist:<br><strong class="text-slate-600">Dr. Arkaprabha Sau</strong>
+      </div>
+    </header>
+
+    <main class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+      
+      <!-- Controls & Nodes (Left Sidebar) -->
+      <aside class="lg:col-span-3 glass-panel p-5 flex flex-col h-full">
+        <h2 class="font-semibold text-blue-600 uppercase text-xs tracking-wider mb-4">Telemetry Controls</h2>
+        
+        <div class="flex gap-2 mb-6">
+          <button id="btnStart" class="flex-1 px-3 py-2 bg-gradient-to-r from-blue-500 to-blue-600 text-white text-sm font-medium rounded-lg shadow-md hover:shadow-lg transition">Start</button>
+          <button id="btnPause" class="flex-1 px-3 py-2 bg-slate-200 text-slate-700 text-sm font-medium rounded-lg shadow hover:bg-slate-300 transition">Pause</button>
+        </div>
+
+        <div class="mb-6">
+          <label class="block text-xs font-semibold text-slate-500 uppercase mb-2">Simulate Heat Event</label>
+          <button id="btnPulse" class="w-full px-3 py-2 bg-pink-50 text-pink-600 border border-pink-200 text-sm font-medium rounded-lg shadow-sm hover:bg-pink-100 transition">Inject Thermal Spike</button>
+        </div>
+
+        <div class="mb-6 flex-1 flex flex-col">
+          <label class="block text-xs font-semibold text-slate-500 uppercase mb-2">Active Worker Nodes</label>
+          <ul id="nodeList" class="node-list flex-1 space-y-2 text-sm"></ul>
+        </div>
+      </aside>
+
+      <!-- Main Visualizations (Center) -->
+      <section class="lg:col-span-6 flex flex-col gap-6">
+        
+        <!-- Map -->
+        <div class="glass-panel p-5">
+          <h2 class="font-semibold text-blue-600 uppercase text-xs tracking-wider mb-3">Geospatial Distribution</h2>
+          <div id="map"></div>
+        </div>
+
+        <!-- AI Predictions -->
+        <div class="glass-panel p-5">
+          <div class="flex justify-between items-center mb-4">
+            <h2 class="font-semibold text-pink-600 uppercase text-xs tracking-wider">AI Inference: Heat Illness Probability</h2>
+            <select id="horizon" class="text-xs border-slate-200 rounded p-1 bg-white shadow-sm focus:ring-blue-500">
+              <option value="1">1 min projection</option>
+              <option value="5" selected>5 min projection</option>
+              <option value="15">15 min projection</option>
+              <option value="30">30 min projection</option>
+            </select>
+          </div>
+          
+          <div class="flex items-end justify-between mb-2">
+            <div class="text-sm text-slate-500">Predicted Risk Score</div>
+            <div class="text-3xl font-bold" id="riskVal">0.00</div>
+          </div>
+          
+          <div class="w-full bg-slate-100 rounded-full h-4 mb-4 shadow-inner overflow-hidden border border-slate-200">
+            <div id="riskBar" class="h-full rounded-full transition-all duration-500" style="width:0%; background:linear-gradient(90deg, #3b82f6, #ec4899, #ef4444);"></div>
+          </div>
+
+          <h3 class="text-xs font-semibold text-slate-500 uppercase mt-4 mb-2">Recommended Protocols</h3>
+          <div id="recos" class="space-y-2"></div>
+        </div>
+        
+      </section>
+
+      <!-- Live Charts (Right Sidebar) -->
+      <aside class="lg:col-span-3 glass-panel p-5 flex flex-col gap-4">
+        <h2 class="font-semibold text-blue-600 uppercase text-xs tracking-wider">Live Biometric & Env Streams</h2>
+        
+        <div class="bg-white/50 rounded-xl p-3 border border-white/60">
+          <div class="text-xs font-semibold text-slate-700 mb-1 flex justify-between">
+            <span>Body Temp (°C)</span> <span class="text-blue-500">Avg</span>
+          </div>
+          <div class="h-24 relative"><canvas id="chartBodyT" class="stacked-chart"></canvas></div>
+        </div>
+
+        <div class="bg-white/50 rounded-xl p-3 border border-white/60">
+          <div class="text-xs font-semibold text-slate-700 mb-1 flex justify-between">
+            <span>Heart Rate (bpm)</span> <span class="text-pink-500">Avg</span>
+          </div>
+          <div class="h-24 relative"><canvas id="chartHR" class="stacked-chart"></canvas></div>
+        </div>
+
+        <div class="bg-white/50 rounded-xl p-3 border border-white/60">
+          <div class="text-xs font-semibold text-slate-700 mb-1 flex justify-between">
+            <span>Env Temp (°C)</span> <span class="text-orange-500">Local</span>
+          </div>
+          <div class="h-24 relative"><canvas id="chartEnvTemp" class="stacked-chart"></canvas></div>
+        </div>
+        
+        <div class="bg-white/50 rounded-xl p-3 border border-white/60">
+          <div class="text-xs font-semibold text-slate-700 mb-1 flex justify-between">
+            <span>Air Quality (AQI)</span> <span class="text-slate-500">Local</span>
+          </div>
+          <div class="h-24 relative"><canvas id="chartAQI" class="stacked-chart"></canvas></div>
+        </div>
+      </aside>
+
+    </main>
+  </div>
+
+  <script>
+    // --------------- Data & Nodes ---------------
+    const nodeNames = ['Boiler Zone A','Turbine Unit 1','Cooling Tower B','Coal Yard East','Control Room Alpha','Ash Handling Unit','Workshop Floor','Canteen Area','Pump House','High-Voltage Switchyard'];
+    const N = 10;
+    const nodes = [];
+    const baseLat = 22.416675, baseLng = 87.872842; 
+    
+    for (let i=0; i<N; i++) {
+      const angle = (i/N)*Math.PI*2;
+      const r = 0.002 + (Math.random()*0.001);
+      const lat = baseLat + Math.cos(angle)*r + (Math.random()-0.5)*0.0004;
+      const lng = baseLng + Math.sin(angle)*r + (Math.random()-0.5)*0.0005;
+      nodes.push({ id:'node-'+(i+1), name:nodeNames[i], lat, lng,
+        envTemp: 32 + (Math.random()*6 - 1.5), hum: 40 + Math.random()*25, aqi: 80 + Math.random()*60,
+        bodyTemp: 36.6 + Math.random()*0.4, hr: 72 + Math.random()*15, history: []
+      });
+    }
+
+    // --------------- Map Setup ---------------
+    const map = L.map('map', { zoomControl: false }).setView([baseLat, baseLng], 16);
+    // Using CartoDB Positron for a cleaner, modern look
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', { maxZoom: 19 }).addTo(map);
+    
+    const markers = {};
+    nodes.forEach(n => {
+      const m = L.circleMarker([n.lat, n.lng], { radius: 8, color: '#3b82f6', fillColor: '#3b82f6', fillOpacity: 0.6, weight: 2 }).addTo(map);
+      m.bindPopup(`<div class="text-sm"><strong>${n.name}</strong><br/>Env: ${n.envTemp.toFixed(1)}°C<br/>Core: ${n.bodyTemp.toFixed(1)}°C</div>`);
+      m.on('click', () => { map.setView([n.lat, n.lng], 17); highlightNode(n.id); });
+      markers[n.id] = m;
+    });
+
+    // --------------- UI Updates ---------------
+    const nodeListEl = document.getElementById('nodeList');
+    let selectedNode = nodes[0].id;
+    
+    function renderNodeList() { 
+        nodeListEl.innerHTML = ''; 
+        nodes.forEach(n => { 
+            const li = document.createElement('li'); 
+            const isSelected = n.id === selectedNode;
+            li.className = `p-3 rounded-xl cursor-pointer transition border ${isSelected ? 'bg-white border-blue-300 shadow-md ring-1 ring-blue-500' : 'bg-white/40 border-white hover:bg-white/60 shadow-sm'}`; 
+            
+            // Status indicator color
+            let statusColor = 'bg-green-400';
+            if(n.envTemp > 40 || n.bodyTemp > 38.5) statusColor = 'bg-red-500';
+            else if(n.envTemp > 36 || n.bodyTemp > 37.8) statusColor = 'bg-orange-400';
+
+            li.innerHTML = `
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-2">
+                        <span class="w-2 h-2 rounded-full ${statusColor}"></span>
+                        <div>
+                            <div class="font-semibold text-slate-700 text-xs">${n.name}</div>
+                            <div class="text-[10px] text-slate-400 font-mono">${n.id}</div>
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <div class="text-xs font-bold ${n.envTemp > 38 ? 'text-red-500' : 'text-slate-600'}">${n.envTemp.toFixed(1)}°C</div>
+                        <div class="text-[10px] text-slate-400">♥ ${Math.round(n.hr)}</div>
+                    </div>
+                </div>`; 
+            
+            li.onclick = () => { selectedNode = n.id; map.setView([n.lat, n.lng], 17); highlightNode(n.id); }; 
+            nodeListEl.appendChild(li); 
+        }); 
+    }
+
+    function highlightNode(id) { selectedNode = id; renderNodeList(); }
+
+    // --------------- Charts Setup ---------------
+    const maxPoints = 40; 
+    function makeLabels(n) { const now=Date.now(); return Array.from({length:n},(_,i)=>new Date(now - (n-1-i)*1000).toLocaleTimeString([], {minute:'2-digit', second:'2-digit'})); }
+    
+    Chart.defaults.font.family = 'Inter';
+    Chart.defaults.color = '#94a3b8';
+    Chart.defaults.scale.grid.color = 'rgba(0,0,0,0.04)';
+
+    function createChart(ctxId, field, color) {
+        return new Chart(document.getElementById(ctxId).getContext('2d'), { 
+            type: 'line', 
+            data: { 
+                labels: makeLabels(maxPoints), 
+                datasets: nodes.map((nd, idx) => ({ 
+                    label: nd.name, 
+                    data: Array(maxPoints).fill(nd[field]), 
+                    borderColor: color,
+                    borderWidth: 1.5, 
+                    pointRadius: 0,
+                    tension: 0.3,
+                    opacity: 0.5
+                })) 
+            }, 
+            options: { 
+                responsive: true,
+                maintainAspectRatio: false,
+                animation: false, 
+                plugins: { legend: { display: false }, tooltip: { enabled: false } }, 
+                scales: { 
+                    x: { display: false },
+                    y: { border: { display: false }, ticks: { maxTicksLimit: 4, font: { size: 9 } } } 
+                } 
+            } 
+        });
+    }
+
+    const chartEnvT = createChart('chartEnvTemp', 'envTemp', '#f97316');
+    const chartAQI = createChart('chartAQI', 'aqi', '#64748b');
+    const chartBTemp = createChart('chartBodyT', 'bodyTemp', '#3b82f6');
+    const chartHR = createChart('chartHR', 'hr', '#ec4899');
+
+    // --------------- AI Model ---------------
+    function illnessLogit(Te, H, AQI, Tb, HR) {
+      const z = 0.25*(Te-30) + 0.15*(H-50) + 0.18*((AQI-100)/50) + 0.8*(Tb-37) + 0.04*(HR-90) - 3.2;
+      return 1/(1+Math.exp(-z));
+    }
+
+    function forwardProject(node, minutes) {
+      const envDrift = (node.envTemp>38 ? 0.05 : 0.02) + (Math.random()-0.5)*0.01; 
+      const Tb = node.bodyTemp + 0.02*minutes*(Math.max(0, node.envTemp - 30)/8);
+      const HR = node.hr + 0.5*minutes*(Math.max(0, node.envTemp - 30)/8);
+      const Te = node.envTemp + envDrift*minutes;
+      return { Te, H: node.hum, AQI: node.aqi, Tb, HR };
+    }
+
+    function remedial(score) {
+      if (score < 0.2) return [{a:'Normal Protocol', d:'Continue routine monitoring. Ensure standard hydration breaks.'}];
+      if (score < 0.5) return [
+        {a:'Caution Phase', d:'Increase hydration frequency. Move heavy exertion tasks to cooler periods.'}
+      ];
+      if (score < 0.75) return [
+        {a:'Mandatory Rest', d:'Initiate 20-min shaded rest immediately. Apply passive cooling.'},
+        {a:'Biometric Check', d:'Supervisor to assess for early signs of heat stress.'}
+      ];
+      return [
+        {a:'CRITICAL EVACUATION', d:'Cease work instantly. Move to active cooling clinic.'},
+        {a:'Medical Alert', d:'Notify onsite medical personnel. Do not leave worker unattended.'}
+      ];
+    }
+
+    // --------------- Simulation Engine ---------------
+    let running = false; let tickTimer = null;
+    
+    function tick() {
+      nodes.forEach((n, idx) => {
+        const hotBias = (['Boiler Zone A','Coal Yard East'].includes(n.name) ? 0.2 : 0.05);
+        n.envTemp += (Math.random()-0.5)*0.3 + hotBias*(Math.random()<0.03?1.2:0);
+        n.bodyTemp += 0.003*(n.envTemp-30) + (Math.random()-0.5)*0.015;
+        n.hr += 0.15*(n.envTemp-30) + (Math.random()-0.5)*0.5;
+
+        n.envTemp = Math.max(22, Math.min(52, n.envTemp));
+        n.bodyTemp = Math.max(36.0, Math.min(40.2, n.bodyTemp));
+        n.hr = Math.max(55, Math.min(170, n.hr));
+
+        const cEnv = chartEnvT.data.datasets[idx];
+        const cBTemp = chartBTemp.data.datasets[idx];
+        const cHR = chartHR.data.datasets[idx];
+        const cAQI = chartAQI.data.datasets[idx];
+
+        cEnv.data.push(n.envTemp); cEnv.data.shift();
+        cBTemp.data.push(n.bodyTemp); cBTemp.data.shift();
+        cHR.data.push(n.hr); cHR.data.shift();
+        cAQI.data.push(n.aqi); cAQI.data.shift();
+        
+        // Highlight selected line
+        const isSel = (n.id === selectedNode);
+        cEnv.borderWidth = isSel ? 3 : 1; cEnv.opacity = isSel ? 1 : 0.2;
+        cBTemp.borderWidth = isSel ? 3 : 1; cBTemp.opacity = isSel ? 1 : 0.2;
+        cHR.borderWidth = isSel ? 3 : 1; cHR.opacity = isSel ? 1 : 0.2;
+
+        const m = markers[n.id];
+        let color = '#3b82f6';
+        if(n.envTemp > 40) color = '#ef4444';
+        else if(n.envTemp > 36) color = '#f97316';
+        
+        m.setStyle({ color: color, fillColor: color, weight: isSel?4:2, radius: isSel?10:8 });
+        m.setPopupContent(`<div class="text-sm font-sans"><strong>${n.name}</strong><br/>Env: <span class="${n.envTemp>38?'text-red-500 font-bold':''}">${n.envTemp.toFixed(1)}°C</span><br/>Core: ${n.bodyTemp.toFixed(1)}°C</div>`);
+      });
+
+      const labels = makeLabels(maxPoints);
+      chartEnvT.data.labels = labels; chartBTemp.data.labels = labels; chartHR.data.labels = labels; chartAQI.data.labels = labels;
+      chartEnvT.update(); chartBTemp.update(); chartHR.update(); chartAQI.update();
+      
+      renderNodeList();
+
+      const sel = nodes.find(n => n.id === selectedNode) || nodes[0];
+      const horizon = Number(document.getElementById('horizon').value);
+      const proj = forwardProject(sel, horizon);
+      const score = illnessLogit(proj.Te, proj.H, proj.AQI, proj.Tb, proj.HR);
+
+      const riskValEl = document.getElementById('riskVal');
+      riskValEl.textContent = (score*100).toFixed(1) + '%';
+      if(score > 0.75) riskValEl.className = "text-3xl font-bold text-red-600";
+      else if(score > 0.5) riskValEl.className = "text-3xl font-bold text-orange-500";
+      else riskValEl.className = "text-3xl font-bold text-slate-700";
+
+      document.getElementById('riskBar').style.width = Math.round(score*100) + '%';
+
+      const recs = remedial(score);
+      const recEl = document.getElementById('recos'); 
+      recEl.innerHTML = ''; 
+      recs.forEach(r => { 
+          recEl.innerHTML += `
+            <div class="p-3 bg-white border ${score>0.75 ? 'border-red-200 bg-red-50' : 'border-slate-100'} rounded-lg shadow-sm">
+                <div class="font-bold text-xs ${score>0.75 ? 'text-red-600' : 'text-slate-700'} mb-1">${r.a}</div>
+                <div class="text-xs text-slate-600 leading-tight">${r.d}</div>
+            </div>`; 
+      });
+    }
+
+    function start() { if(running) return; running=true; tickTimer=setInterval(tick, 1000); document.getElementById('btnStart').className = "flex-1 px-3 py-2 bg-slate-200 text-slate-500 text-sm font-medium rounded-lg shadow-inner cursor-not-allowed"; document.getElementById('btnPause').className = "flex-1 px-3 py-2 bg-white text-slate-700 border border-slate-200 text-sm font-medium rounded-lg shadow hover:bg-slate-50 transition"; }
+    function pause() { if(!running) return; running=false; clearInterval(tickTimer); document.getElementById('btnStart').className = "flex-1 px-3 py-2 bg-gradient-to-r from-blue-500 to-blue-600 text-white text-sm font-medium rounded-lg shadow-md hover:shadow-lg transition"; document.getElementById('btnPause').className = "flex-1 px-3 py-2 bg-slate-200 text-slate-500 text-sm font-medium rounded-lg shadow-inner cursor-not-allowed"; }
+
+    document.getElementById('btnStart').onclick = start;
+    document.getElementById('btnPause').onclick = pause;
+    document.getElementById('btnPulse').onclick = () => { 
+        const n = nodes.find(x=>x.id===selectedNode) || nodes[0];
+        n.envTemp += 8 + Math.random()*5; 
+        n.bodyTemp += 0.5 + Math.random()*0.5; 
+        n.hr += 15 + Math.random()*10; 
+        tick(); 
+    };
+
+    renderNodeList(); start();
+  </script>
+</body>
+</html>
