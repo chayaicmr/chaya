@@ -265,10 +265,13 @@
         }
 
         .node-title {
-            font-size: 1.1rem;
-            font-weight: 600;
-            color: var(--text-main);
+            font-size: 1.15rem;
+            font-weight: 700;
             margin-bottom: 0.5rem;
+            background: linear-gradient(90deg, var(--accent-blue), var(--accent-pink));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: inline-block;
         }
 
         .node-desc {
@@ -494,7 +497,7 @@
                 </div>
             </div>
             <div class="schematic-node" style="margin-top: 2rem; border-top: 4px solid var(--accent-pink);">
-                <div class="node-title text-center" style="color: var(--accent-pink);">National Implementation Framework</div>
+                <div class="node-title text-center" style="display: block;">National Implementation Framework</div>
                 <div class="node-desc text-center" style="font-size: 1rem; max-width: 800px; margin: 0 auto;">Strategic deployment across 4 critical regions of India: <strong>North, South, East, and West</strong> to capture diverse climactic and occupational stress patterns.</div>
             </div>
         </div>
