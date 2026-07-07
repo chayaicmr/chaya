@@ -44,29 +44,9 @@
             opacity: 0.4;
         }
 
-        .blob-1 {
-            top: -10%;
-            left: -10%;
-            width: 50vw;
-            height: 50vw;
-            background: var(--accent-blue);
-        }
-
-        .blob-2 {
-            top: 20%;
-            right: -10%;
-            width: 40vw;
-            height: 40vw;
-            background: var(--accent-pink);
-        }
-        
-        .blob-3 {
-            bottom: 10%;
-            left: 20%;
-            width: 60vw;
-            height: 60vw;
-            background: rgba(59, 130, 246, 0.3);
-        }
+        .blob-1 { top: -10%; left: -10%; width: 50vw; height: 50vw; background: var(--accent-blue); }
+        .blob-2 { top: 20%; right: -10%; width: 40vw; height: 40vw; background: var(--accent-pink); }
+        .blob-3 { bottom: 10%; left: 20%; width: 60vw; height: 60vw; background: rgba(59, 130, 246, 0.3); }
 
         .glass-panel {
             background: var(--glass-bg);
@@ -92,13 +72,24 @@
             z-index: 1000;
         }
 
-        .logo {
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-text {
             font-size: 1.5rem;
             font-weight: 700;
             background: linear-gradient(90deg, var(--accent-blue), var(--accent-pink));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             letter-spacing: 1px;
+        }
+
+        .logo-icon {
+            width: 32px;
+            height: 32px;
         }
 
         nav a {
@@ -235,7 +226,7 @@
             font-size: 0.95rem;
         }
 
-        /* Workflow Schematic - Scientific Structure */
+        /* Workflow Schematic */
         .workflow-schematic {
             padding: 4rem;
             margin-bottom: 4rem;
@@ -285,7 +276,6 @@
             color: var(--text-muted);
         }
 
-        /* Demo Iframe */
         .iframe-container {
             width: 100%;
             height: 80vh;
@@ -346,8 +336,26 @@
         .team-card h3 {
             font-size: 1.3rem;
             color: var(--text-main);
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.2rem;
             font-weight: 700;
+        }
+
+        .qualifications {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .orcid {
+            display: inline-block;
+            font-size: 0.75rem;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            background: #e2e8f0;
+            color: #475569;
+            margin-bottom: 1rem;
+            font-family: monospace;
         }
 
         .member-title {
@@ -411,7 +419,21 @@
     <div class="ambient-blob blob-3"></div>
 
     <header class="glass-panel">
-        <div class="logo">CHAYA</div>
+        <div class="logo-container">
+            <!-- Simple SVG Logo symbolizing Data/Network + Health -->
+            <svg class="logo-icon" viewBox="0 0 24 24" fill="none" stroke="url(#logo-grad)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <defs>
+                    <linearGradient id="logo-grad" x1="0%" y1="0%" x2="100%" y2="0%">
+                        <stop offset="0%" stop-color="#3b82f6" />
+                        <stop offset="100%" stop-color="#ec4899" />
+                    </linearGradient>
+                </defs>
+                <path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>
+                <circle cx="22" cy="12" r="1.5" fill="#ec4899" stroke="none"></circle>
+                <circle cx="2" cy="12" r="1.5" fill="#3b82f6" stroke="none"></circle>
+            </svg>
+            <div class="logo-text">CHAYA</div>
+        </div>
         <nav>
             <a href="#about">Research</a>
             <a href="#architecture">Architecture</a>
@@ -489,12 +511,6 @@
             </div>
         </div>
 
-        <!-- 
-            Note regarding GitHub Pages 404 Error:
-            If you are seeing a 404 for IoT_ML_SURVEILLANCE.html on GitHub pages, 
-            ensure that the file 'IoT_ML_SURVEILLANCE.html' has been properly committed 
-            and pushed to the repository, and that the casing matches exactly.
-        -->
         <div class="iframe-container glass-panel">
             <iframe src="./IoT_ML_SURVEILLANCE.html" title="Digital Twin Simulation" style="width:100%; height:100%; border:none;"></iframe>
         </div>
@@ -507,23 +523,27 @@
         </div>
 
         <div class="team-grid">
-            <!-- PI -->
+            <!-- 1. PI: Prof Monalisha Sahu -->
             <div class="team-card glass-panel">
-                <img src="./monalisha.jpg" alt="Prof. Monalisha Sahu" class="member-avatar">
+                <img src="https://ui-avatars.com/api/?name=Monalisha+Sahu&background=ec4899&color=fff&size=128" alt="Prof. Monalisha Sahu" class="member-avatar">
                 <div class="member-role-badge pi-badge">Principal Investigator</div>
                 <h3>Prof. (Dr.) Monalisha Sahu</h3>
-                <div class="member-title">Project Head & Occupational Health Specialist</div>
+                <div class="qualifications">MD, PhD</div>
+                <div class="orcid">ORCID: 0000-0000-0000-0000</div>
+                <div class="member-title">Project Head & Occupational & Environmental Health Specialist</div>
                 <div class="member-affiliation">
                     Head, Department of Occupational Health<br>
                     All India Institute of Hygiene & Public Health
                 </div>
             </div>
 
-            <!-- Co-PI / Chief AI -->
+            <!-- 2. Lead AI: Dr. Arkaprabha Sau -->
             <div class="team-card glass-panel">
                 <img src="https://ui-avatars.com/api/?name=Arkaprabha+Sau&background=3b82f6&color=fff&size=128" alt="Dr. Arkaprabha Sau" class="member-avatar">
                 <div class="member-role-badge">Co-Principal Investigator</div>
                 <h3>Dr. Arkaprabha Sau</h3>
+                <div class="qualifications">MBBS, MD, DPH, PhD</div>
+                <div class="orcid">ORCID: 0000-0000-0000-0000</div>
                 <div class="member-title">Chief AI/ML/IoT Scientist & Occupational Health Specialist</div>
                 <div class="member-affiliation">
                     Deputy Director (Medical)<br>
@@ -532,11 +552,13 @@
                 </div>
             </div>
 
-            <!-- Co-PIs -->
+            <!-- 3. Dr. Harshal Ramesh Salve -->
             <div class="team-card glass-panel">
                 <img src="https://ui-avatars.com/api/?name=Harshal+Ramesh+Salve&background=8b5cf6&color=fff&size=128" alt="Dr. Harshal Ramesh Salve" class="member-avatar">
                 <div class="member-role-badge">Co-Principal Investigator</div>
                 <h3>Dr. Harshal Ramesh Salve</h3>
+                <div class="qualifications">MBBS, MD</div>
+                <div class="orcid">ORCID: 0000-0000-0000-0000</div>
                 <div class="member-title">Community Medicine Expert</div>
                 <div class="member-affiliation">
                     Additional Professor<br>
@@ -544,32 +566,13 @@
                 </div>
             </div>
 
-            <div class="team-card glass-panel">
-                <img src="https://ui-avatars.com/api/?name=Bhavesh+Modi&background=14b8a6&color=fff&size=128" alt="Dr. Bhavesh Modi" class="member-avatar">
-                <div class="member-role-badge">Co-Principal Investigator</div>
-                <h3>Dr. Bhavesh Modi</h3>
-                <div class="member-title">Occupational Health Scientist</div>
-                <div class="member-affiliation">
-                    Scientist G<br>
-                    ICMR – National Institute of Occupational Health
-                </div>
-            </div>
-
-            <div class="team-card glass-panel">
-                <img src="https://ui-avatars.com/api/?name=Debashis+Dutt&background=f59e0b&color=fff&size=128" alt="Prof. Debashis Dutt" class="member-avatar">
-                <div class="member-role-badge">Co-Principal Investigator</div>
-                <h3>Prof. Debashis Dutt</h3>
-                <div class="member-title">Public Health Administration Authority</div>
-                <div class="member-affiliation">
-                    Professor, Public Health Administration<br>
-                    AIIH&PH
-                </div>
-            </div>
-
+            <!-- 4. Dr. Manas Kumar Kundu -->
             <div class="team-card glass-panel">
                 <img src="https://ui-avatars.com/api/?name=Manas+Kumar+Kundu&background=0ea5e9&color=fff&size=128" alt="Dr. Manas Kumar Kundu" class="member-avatar">
                 <div class="member-role-badge">Co-Principal Investigator</div>
                 <h3>Dr. Manas Kumar Kundu</h3>
+                <div class="qualifications">MD</div>
+                <div class="orcid">ORCID: 0000-0000-0000-0000</div>
                 <div class="member-title">Epidemiological Researcher</div>
                 <div class="member-affiliation">
                     Director, Department of Epidemiology<br>
@@ -577,21 +580,27 @@
                 </div>
             </div>
 
+            <!-- 5. Prof. Debashis Dutt -->
             <div class="team-card glass-panel">
-                <img src="https://ui-avatars.com/api/?name=Ankit+Mayurkumar+Sheth&background=6366f1&color=fff&size=128" alt="Dr. Ankit Mayurkumar Sheth" class="member-avatar">
+                <img src="https://ui-avatars.com/api/?name=Debashis+Dutt&background=f59e0b&color=fff&size=128" alt="Prof. Debashis Dutt" class="member-avatar">
                 <div class="member-role-badge">Co-Principal Investigator</div>
-                <h3>Dr. Ankit Mayurkumar Sheth</h3>
-                <div class="member-title">Research Scientist</div>
+                <h3>Prof. Debashis Dutt</h3>
+                <div class="qualifications">MD</div>
+                <div class="orcid">ORCID: 0000-0000-0000-0000</div>
+                <div class="member-title">Public Health Administration Authority</div>
                 <div class="member-affiliation">
-                    Scientist E<br>
-                    ICMR – NIOH
+                    Professor, Public Health Administration<br>
+                    AIIH&PH
                 </div>
             </div>
 
+            <!-- 6. Prof. Ranjan Das -->
             <div class="team-card glass-panel">
                 <img src="https://ui-avatars.com/api/?name=Ranjan+Das&background=10b981&color=fff&size=128" alt="Prof. Ranjan Das" class="member-avatar">
                 <div class="member-role-badge">Co-Principal Investigator</div>
                 <h3>Prof. Ranjan Das</h3>
+                <div class="qualifications">MD</div>
+                <div class="orcid">ORCID: 0000-0000-0000-0000</div>
                 <div class="member-title">Disease Control Authority</div>
                 <div class="member-affiliation">
                     Director<br>
@@ -599,10 +608,27 @@
                 </div>
             </div>
 
+            <!-- 7. Dr. Bhavesh Modi -->
+            <div class="team-card glass-panel">
+                <img src="https://ui-avatars.com/api/?name=Bhavesh+Modi&background=14b8a6&color=fff&size=128" alt="Dr. Bhavesh Modi" class="member-avatar">
+                <div class="member-role-badge">Co-Principal Investigator</div>
+                <h3>Dr. Bhavesh Modi</h3>
+                <div class="qualifications">MD, PhD</div>
+                <div class="orcid">ORCID: 0000-0000-0000-0000</div>
+                <div class="member-title">Occupational Health Scientist</div>
+                <div class="member-affiliation">
+                    Scientist G<br>
+                    ICMR – National Institute of Occupational Health
+                </div>
+            </div>
+
+            <!-- 8. Prof. Jhareswar Maiti -->
             <div class="team-card glass-panel">
                 <img src="https://ui-avatars.com/api/?name=Jhareswar+Maiti&background=f43f5e&color=fff&size=128" alt="Prof. Jhareswar Maiti" class="member-avatar">
                 <div class="member-role-badge">Co-Principal Investigator</div>
                 <h3>Prof. Jhareswar Maiti</h3>
+                <div class="qualifications">PhD</div>
+                <div class="orcid">ORCID: 0000-0000-0000-0000</div>
                 <div class="member-title">Engineering & Safety Analytics Specialist</div>
                 <div class="member-affiliation">
                     Professor<br>
@@ -610,24 +636,44 @@
                 </div>
             </div>
 
-            <div class="team-card glass-panel">
-                <img src="https://ui-avatars.com/api/?name=Merlyn+Joseph&background=84cc16&color=fff&size=128" alt="Dr. Merlyn Joseph" class="member-avatar">
-                <div class="member-role-badge">Co-Principal Investigator</div>
-                <h3>Dr. Merlyn Joseph</h3>
-                <div class="member-title">Medical Professional</div>
-                <div class="member-affiliation">
-                    Assistant Professor<br>
-                    St. John's Medical College Hospital
-                </div>
-            </div>
-
+            <!-- 9. Prof. Bobby Joseph -->
             <div class="team-card glass-panel">
                 <img src="https://ui-avatars.com/api/?name=Bobby+Joseph&background=06b6d4&color=fff&size=128" alt="Prof. Bobby Joseph" class="member-avatar">
                 <div class="member-role-badge">Co-Principal Investigator</div>
                 <h3>Prof. Bobby Joseph</h3>
+                <div class="qualifications">MD, PhD</div>
+                <div class="orcid">ORCID: 0000-0000-0000-0000</div>
                 <div class="member-title">Occupational Health Academic</div>
                 <div class="member-affiliation">
                     Professor, Division of Occupational Health<br>
+                    St. John's Medical College Hospital
+                </div>
+            </div>
+
+            <!-- 10. Dr. Ankit Mayurkumar Sheth (Scientist F) -->
+            <div class="team-card glass-panel">
+                <img src="https://ui-avatars.com/api/?name=Ankit+Mayurkumar+Sheth&background=6366f1&color=fff&size=128" alt="Dr. Ankit Mayurkumar Sheth" class="member-avatar">
+                <div class="member-role-badge">Co-Principal Investigator</div>
+                <h3>Dr. Ankit Mayurkumar Sheth</h3>
+                <div class="qualifications">PhD</div>
+                <div class="orcid">ORCID: 0000-0000-0000-0000</div>
+                <div class="member-title">Research Scientist</div>
+                <div class="member-affiliation">
+                    Scientist F<br>
+                    ICMR – NIOH
+                </div>
+            </div>
+
+            <!-- 11. Dr. Merlyn Joseph -->
+            <div class="team-card glass-panel">
+                <img src="https://ui-avatars.com/api/?name=Merlyn+Joseph&background=84cc16&color=fff&size=128" alt="Dr. Merlyn Joseph" class="member-avatar">
+                <div class="member-role-badge">Co-Principal Investigator</div>
+                <h3>Dr. Merlyn Joseph</h3>
+                <div class="qualifications">MD</div>
+                <div class="orcid">ORCID: 0000-0000-0000-0000</div>
+                <div class="member-title">Medical Professional</div>
+                <div class="member-affiliation">
+                    Assistant Professor<br>
                     St. John's Medical College Hospital
                 </div>
             </div>
