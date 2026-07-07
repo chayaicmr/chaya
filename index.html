@@ -6,16 +6,16 @@
     <title>CHAYA | Climate Health Adaptation for Workers</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-color: #0f172a;
-            --surface-color: #1e293b;
-            --primary-color: #38bdf8;
-            --primary-glow: rgba(56, 189, 248, 0.5);
-            --text-main: #f8fafc;
-            --text-muted: #cbd5e1;
-            --border-color: rgba(255, 255, 255, 0.1);
+            --who-blue: #005bbb;
+            --who-light-blue: #008dc9;
+            --bg-white: #ffffff;
+            --bg-light-gray: #f5f5f5;
+            --text-dark: #333333;
+            --text-gray: #555555;
+            --border-gray: #e0e0e0;
         }
 
         * {
@@ -26,58 +26,70 @@
         }
 
         body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-main);
+            font-family: 'Roboto', Helvetica, Arial, sans-serif;
+            background-color: var(--bg-white);
+            color: var(--text-dark);
             line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Top Bar */
+        .top-bar {
+            background-color: var(--who-blue);
+            height: 8px;
+            width: 100%;
         }
 
         /* Header */
         header {
-            position: fixed;
+            position: sticky;
             top: 0;
             width: 100%;
+            background: var(--bg-white);
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 1.2rem 8%;
-            background: rgba(15, 23, 42, 0.8);
-            backdrop-filter: blur(12px);
-            border-bottom: 1px solid var(--border-color);
+            padding: 1rem 8%;
+            border-bottom: 1px solid var(--border-gray);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
             z-index: 1000;
         }
 
         .logo {
-            font-size: 1.5rem;
-            font-weight: 700;
-            background: linear-gradient(90deg, #38bdf8, #818cf8);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            font-size: 2rem;
+            font-weight: 900;
+            color: var(--who-blue);
             letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo::before {
+            content: '⚕️';
+            font-size: 1.8rem;
         }
 
         nav a {
-            color: var(--text-muted);
+            color: var(--text-dark);
             text-decoration: none;
-            margin-left: 2rem;
+            margin-left: 2.5rem;
             font-weight: 500;
-            font-size: 0.95rem;
-            transition: color 0.3s;
+            font-size: 1rem;
+            transition: color 0.2s;
         }
 
         nav a:hover {
-            color: var(--primary-color);
+            color: var(--who-blue);
         }
 
         /* Hero Section */
         .hero {
-            min-height: 100vh;
+            background-color: var(--bg-light-gray);
+            padding: 100px 8% 80px;
             display: flex;
             align-items: center;
-            justify-content: center;
-            text-align: center;
-            padding: 120px 20px 60px;
-            background: radial-gradient(circle at center top, rgba(56,189,248,0.15) 0%, var(--bg-color) 60%);
+            border-bottom: 1px solid var(--border-gray);
         }
 
         .hero-content {
@@ -85,68 +97,68 @@
         }
 
         .hero h1 {
-            font-size: clamp(3rem, 5vw, 5rem);
+            font-size: clamp(2.5rem, 4vw, 3.5rem);
             font-weight: 700;
-            line-height: 1.1;
-            margin-bottom: 1.5rem;
-            background: linear-gradient(135deg, #fff 0%, #cbd5e1 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            line-height: 1.2;
+            color: var(--who-blue);
+            margin-bottom: 1rem;
         }
 
-        .hero h1 span {
-            background: linear-gradient(90deg, #38bdf8, #818cf8);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+        .hero h2 {
+            font-size: 1.5rem;
+            font-weight: 400;
+            color: var(--text-dark);
+            margin-bottom: 1.5rem;
         }
 
         .hero p {
             font-size: 1.1rem;
-            color: var(--text-muted);
+            color: var(--text-gray);
             max-width: 800px;
-            margin: 0 auto 2.5rem;
-            font-weight: 300;
+            margin-bottom: 2.5rem;
         }
 
         .btn {
             display: inline-block;
-            padding: 1rem 2.5rem;
-            border-radius: 50px;
-            background: linear-gradient(90deg, #38bdf8, #2563eb);
+            padding: 12px 30px;
+            background-color: var(--who-blue);
             color: #fff;
             text-decoration: none;
-            font-weight: 600;
+            font-weight: 500;
             font-size: 1rem;
-            box-shadow: 0 4px 15px var(--primary-glow);
-            transition: transform 0.3s, box-shadow 0.3s;
+            border-radius: 4px;
+            transition: background-color 0.2s;
         }
 
         .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px var(--primary-glow);
+            background-color: #004494;
         }
 
         /* Sections General */
         section {
-            padding: 100px 8%;
+            padding: 80px 8%;
+        }
+
+        .bg-gray {
+            background-color: var(--bg-light-gray);
         }
 
         .section-header {
-            text-align: center;
-            margin-bottom: 4rem;
+            margin-bottom: 3rem;
+            border-bottom: 2px solid var(--who-blue);
+            padding-bottom: 1rem;
+            max-width: 800px;
         }
 
         .section-header h2 {
-            font-size: 2.5rem;
+            font-size: 2.2rem;
             font-weight: 700;
-            color: #fff;
-            margin-bottom: 1rem;
+            color: var(--text-dark);
+            margin-bottom: 0.5rem;
         }
 
         .section-header p {
-            color: var(--text-muted);
-            max-width: 700px;
-            margin: 0 auto;
+            color: var(--text-gray);
             font-size: 1.1rem;
         }
 
@@ -158,186 +170,238 @@
         }
 
         .card {
-            background: var(--surface-color);
-            padding: 2.5rem 2rem;
-            border-radius: 20px;
-            border: 1px solid var(--border-color);
-            transition: transform 0.3s, box-shadow 0.3s;
-        }
-
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            border-color: rgba(56, 189, 248, 0.3);
+            background: var(--bg-white);
+            padding: 2rem;
+            border: 1px solid var(--border-gray);
+            border-top: 4px solid var(--who-light-blue);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.02);
         }
 
         .card-icon {
             font-size: 2.5rem;
-            margin-bottom: 1.5rem;
-            display: inline-block;
+            margin-bottom: 1rem;
+            display: block;
+            color: var(--who-blue);
         }
 
         .card h3 {
             font-size: 1.3rem;
             margin-bottom: 1rem;
-            color: #fff;
+            color: var(--who-blue);
+            font-weight: 700;
         }
 
         .card p {
-            color: var(--text-muted);
-            font-size: 0.95rem;
+            color: var(--text-gray);
+            font-size: 1rem;
         }
 
         /* Workflow */
-        .workflow-container {
+        .workflow-schematic {
             display: flex;
-            flex-wrap: wrap;
+            flex-direction: column;
+            gap: 2rem;
+            background: var(--bg-white);
+            padding: 2.5rem;
+            border: 1px solid var(--border-gray);
+            margin-bottom: 3rem;
+        }
+
+        .schematic-row {
+            display: flex;
             justify-content: center;
             align-items: center;
-            gap: 1rem;
-            background: var(--surface-color);
-            padding: 3rem;
-            border-radius: 24px;
-            border: 1px solid var(--border-color);
+            flex-wrap: wrap;
+            gap: 1.5rem;
         }
 
-        .step {
-            background: rgba(15, 23, 42, 0.6);
-            padding: 1rem 1.5rem;
-            border-radius: 12px;
-            font-weight: 500;
-            border: 1px solid rgba(255,255,255,0.05);
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            color: var(--primary-color);
+        .schematic-box {
+            background: var(--bg-light-gray);
+            padding: 1.5rem;
+            border: 1px solid var(--border-gray);
+            border-left: 4px solid var(--who-blue);
+            text-align: center;
+            min-width: 200px;
         }
 
-        .arrow {
-            color: var(--text-muted);
-            opacity: 0.5;
+        .schematic-box h4 {
+            color: var(--text-dark);
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        .schematic-box p {
+            font-size: 0.9rem;
+            color: var(--text-gray);
+        }
+
+        .schematic-arrow {
+            font-size: 2rem;
+            color: var(--who-blue);
+        }
+
+        .iframe-container {
+            width: 100%;
+            height: 80vh;
+            border: 1px solid var(--border-gray);
+            background: var(--bg-white);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
         }
 
         /* Team Section */
         .team-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 2rem;
         }
 
         .team-card {
-            background: var(--surface-color);
-            border-radius: 20px;
+            background: var(--bg-white);
             padding: 2rem;
-            border: 1px solid var(--border-color);
-            position: relative;
-            overflow: hidden;
-            transition: transform 0.3s;
-        }
-
-        .team-card:hover {
-            transform: translateY(-5px);
+            border: 1px solid var(--border-gray);
+            text-align: left;
+            display: flex;
+            flex-direction: column;
         }
 
         .team-card.pi {
-            border-top: 4px solid #fbbf24;
+            border-top: 4px solid var(--who-blue);
+            background-color: #f0f7ff;
         }
 
         .team-card.lead {
-            border-top: 4px solid var(--primary-color);
+            border-top: 4px solid var(--who-light-blue);
+        }
+
+        .member-header {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .member-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            border: 2px solid var(--border-gray);
+            object-fit: cover;
+        }
+
+        .member-info h3 {
+            font-size: 1.2rem;
+            color: var(--who-blue);
+            margin-bottom: 0.2rem;
         }
 
         .member-role-badge {
             display: inline-block;
-            padding: 0.3rem 0.8rem;
-            border-radius: 50px;
             font-size: 0.8rem;
-            font-weight: 600;
-            margin-bottom: 1.2rem;
+            font-weight: 700;
+            color: var(--text-gray);
             text-transform: uppercase;
-            letter-spacing: 0.5px;
         }
 
-        .pi .member-role-badge {
-            background: rgba(251, 191, 36, 0.1);
-            color: #fbbf24;
-        }
-
-        .lead .member-role-badge {
-            background: rgba(56, 189, 248, 0.1);
-            color: var(--primary-color);
-        }
-
-        .team-card h3 {
-            font-size: 1.4rem;
-            color: #fff;
-            margin-bottom: 0.5rem;
-        }
+        .pi .member-role-badge { color: var(--who-blue); }
 
         .member-title {
-            color: var(--text-muted);
-            font-weight: 500;
-            margin-bottom: 1rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 0.5rem;
             font-size: 0.95rem;
         }
 
         .member-affiliation {
-            color: #94a3b8;
-            font-size: 0.85rem;
+            color: var(--text-gray);
+            font-size: 0.9rem;
             line-height: 1.5;
-            border-top: 1px solid var(--border-color);
+            border-top: 1px solid var(--border-gray);
             padding-top: 1rem;
+            margin-top: auto;
+        }
+
+        /* Contact Section */
+        .contact-box {
+            background: var(--who-blue);
+            color: #fff;
+            padding: 3rem;
+            text-align: center;
+        }
+
+        .contact-box h2 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .contact-box p {
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
+        .contact-box a.btn {
+            background-color: #fff;
+            color: var(--who-blue);
+        }
+
+        .contact-box a.btn:hover {
+            background-color: #f0f0f0;
         }
 
         /* Footer */
         footer {
-            background: #020617;
-            padding: 4rem 8% 2rem;
-            text-align: center;
-            border-top: 1px solid var(--border-color);
-        }
-
-        footer h4 {
-            font-size: 1.5rem;
+            background: var(--text-dark);
             color: #fff;
-            margin-bottom: 1rem;
-            letter-spacing: 2px;
-        }
-
-        footer p {
-            color: var(--text-muted);
-            margin-bottom: 0.5rem;
+            padding: 3rem 8% 2rem;
             font-size: 0.9rem;
         }
 
+        footer h4 {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            color: #fff;
+        }
+
+        footer p {
+            color: #ccc;
+            margin-bottom: 0.5rem;
+        }
+
         .copyright {
-            margin-top: 3rem;
+            margin-top: 2rem;
             padding-top: 1.5rem;
-            border-top: 1px solid rgba(255,255,255,0.05);
-            font-size: 0.8rem;
-            color: #64748b;
+            border-top: 1px solid #555;
+            color: #999;
+            text-align: center;
         }
 
         @media (max-width: 768px) {
             header {
-                padding: 1rem 5%;
+                flex-direction: column;
+                gap: 1rem;
             }
-            nav {
-                display: none;
+            nav a {
+                margin: 0 1rem;
+            }
+            .hero {
+                padding: 60px 5%;
             }
             section {
-                padding: 80px 5%;
+                padding: 60px 5%;
+            }
+            .schematic-arrow {
+                transform: rotate(90deg);
             }
         }
     </style>
 </head>
 <body>
-
+    <div class="top-bar"></div>
     <header>
         <div class="logo">CHAYA</div>
         <nav>
             <a href="#about">About</a>
-            <a href="#workflow">Workflow</a>
+            <a href="#workflow">Demo & Workflow</a>
             <a href="#team">Team</a>
             <a href="#contact">Contact</a>
         </nav>
@@ -345,17 +409,17 @@
 
     <section class="hero">
         <div class="hero-content">
-            <h1><span>CHAYA</span></h1>
-            <p style="font-size: 1.5rem; font-weight: 500; color: #fff; margin-bottom: 1rem;">Climate Health Adaptation for Workers</p>
-            <p>through AI-Driven Digital Twin Heat Risk Prediction. A multidisciplinary research initiative integrating Artificial Intelligence, Digital Twins, IoT, Occupational Health, and Climate Science.</p>
-            <a class="btn" href="#about">Explore Project</a>
+            <h1>CHAYA Initiative</h1>
+            <h2>Climate Health Adaptation for Workers</h2>
+            <p>A multidisciplinary research initiative integrating Artificial Intelligence, Digital Twins, IoT, Occupational Health, and Climate Science to pioneer heat-illness prediction and prevention.</p>
+            <a class="btn" href="#about">Learn More</a>
         </div>
     </section>
 
     <section id="about">
         <div class="section-header">
-            <h2>About CHAYA</h2>
-            <p>Building an intelligent occupational health surveillance ecosystem using wearable sensors, AI-driven risk prediction, and Digital Twin technology for real-time monitoring and early warning.</p>
+            <h2>About The Program</h2>
+            <p>Building an intelligent occupational health surveillance ecosystem using wearable sensors, AI-driven risk prediction, and Digital Twin technology for real-time monitoring.</p>
         </div>
 
         <div class="cards">
@@ -367,42 +431,67 @@
             <div class="card">
                 <span class="card-icon">🤖</span>
                 <h3>AI & ML</h3>
-                <p>Predict heat illness risk using sophisticated machine learning algorithms and real-time data.</p>
+                <p>Predict heat illness risk using sophisticated machine learning algorithms.</p>
             </div>
             <div class="card">
                 <span class="card-icon">🛰️</span>
                 <h3>Digital Twin</h3>
-                <p>Create accurate virtual representations of workers and their physical work environments.</p>
+                <p>Create accurate virtual representations of workers and physical environments.</p>
             </div>
             <div class="card">
                 <span class="card-icon">👷</span>
                 <h3>Occupational Health</h3>
-                <p>Support evidence-based preventive interventions to safeguard worker well-being.</p>
+                <p>Support evidence-based preventive interventions to safeguard well-being.</p>
             </div>
         </div>
     </section>
 
-    <section id="workflow">
+    <section id="workflow" class="bg-gray">
         <div class="section-header">
-            <h2>Digital Twin Workflow</h2>
-            <p>Our end-to-end data pipeline from physical worker to actionable insights.</p>
+            <h2>Project Architecture & Digital Twin</h2>
+            <p>Experience the end-to-end framework from data collection to predictive analytics.</p>
         </div>
-        <div class="workflow-container">
-            <div class="step">👷 Worker</div>
-            <div class="arrow">➜</div>
-            <div class="step">🪖 Smart Helmet</div>
-            <div class="arrow">➜</div>
-            <div class="step">📡 IoT Sensors</div>
-            <div class="arrow">➜</div>
-            <div class="step">☁️ Cloud Hub</div>
-            <div class="arrow">➜</div>
-            <div class="step">🧠 AI Engine</div>
-            <div class="arrow">➜</div>
-            <div class="step">👥 Digital Twin</div>
-            <div class="arrow">➜</div>
-            <div class="step">📊 Risk Dashboard</div>
-            <div class="arrow">➜</div>
-            <div class="step">🚨 Early Warning</div>
+        
+        <div class="workflow-schematic">
+            <div class="schematic-row">
+                <div class="schematic-box">
+                    <h4>👷 Physical Worker</h4>
+                    <p>On-site execution in harsh environments</p>
+                </div>
+                <div class="schematic-arrow">→</div>
+                <div class="schematic-box">
+                    <h4>🪖 IoT & Wearables</h4>
+                    <p>Smart Helmet, DHT22, HR & AQ Sensors</p>
+                </div>
+                <div class="schematic-arrow">→</div>
+                <div class="schematic-box">
+                    <h4>📡 Cloud Edge</h4>
+                    <p>ESP32 based secure data transmission</p>
+                </div>
+            </div>
+            <div class="schematic-row">
+                <div class="schematic-arrow" style="margin: 1rem 0;">↓</div>
+            </div>
+            <div class="schematic-row">
+                <div class="schematic-box">
+                    <h4>🧠 AI/ML Engine</h4>
+                    <p>Logistic Regression & Predictive Models</p>
+                </div>
+                <div class="schematic-arrow">→</div>
+                <div class="schematic-box">
+                    <h4>🛰️ Digital Twin</h4>
+                    <p>Real-time Virtual Worker Representation</p>
+                </div>
+                <div class="schematic-arrow">→</div>
+                <div class="schematic-box">
+                    <h4>🚨 Dashboard</h4>
+                    <p>Early Warnings & ACGIH Guidelines</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="iframe-container">
+            <iframe src="IoT_ML_SURVEILLANCE.html" title="Digital Twin Demo" style="width:100%; height:100%; border:none;"></iframe>
         </div>
     </section>
 
@@ -415,20 +504,30 @@
         <div class="team-grid">
             <!-- PI -->
             <div class="team-card pi">
-                <div class="member-role-badge">Principal Investigator</div>
-                <h3>Prof. (Dr.) Monalisha Sahu</h3>
-                <div class="member-title">Project Head</div>
+                <div class="member-header">
+                    <img src="https://ui-avatars.com/api/?name=Monalisha+Sahu&background=005bbb&color=fff&size=128" alt="Prof. Monalisha Sahu" class="member-avatar">
+                    <div class="member-info">
+                        <h3>Prof. (Dr.) Monalisha Sahu</h3>
+                        <div class="member-role-badge">Principal Investigator</div>
+                    </div>
+                </div>
+                <div class="member-title">Project Head & Occupational Health Expert</div>
                 <div class="member-affiliation">
                     Head, Department of Occupational Health<br>
                     All India Institute of Hygiene & Public Health
                 </div>
             </div>
 
-            <!-- Co-PI -->
+            <!-- Co-PI / Chief AI -->
             <div class="team-card lead">
-                <div class="member-role-badge">Co-Principal Investigator</div>
-                <h3>Dr. Arkaprabha Sau</h3>
-                <div class="member-title">Lead AI/ML Scientist</div>
+                <div class="member-header">
+                    <img src="https://ui-avatars.com/api/?name=Arkaprabha+Sau&background=008dc9&color=fff&size=128" alt="Dr. Arkaprabha Sau" class="member-avatar">
+                    <div class="member-info">
+                        <h3>Dr. Arkaprabha Sau</h3>
+                        <div class="member-role-badge">Co-Principal Investigator</div>
+                    </div>
+                </div>
+                <div class="member-title">Chief AI/ML/IoT Scientist and Occupational Health Specialist</div>
                 <div class="member-affiliation">
                     Deputy Director (Medical)<br>
                     Regional Labour Institute, Kolkata<br>
@@ -436,99 +535,156 @@
                 </div>
             </div>
 
-            <!-- Team Members -->
+            <!-- Co-PIs -->
             <div class="team-card">
-                <h3>Dr. Harshal Ramesh Salve</h3>
-                <div class="member-title">Additional Professor</div>
+                <div class="member-header">
+                    <img src="https://ui-avatars.com/api/?name=Harshal+Ramesh+Salve&background=e0e0e0&color=333&size=128" alt="Dr. Harshal Ramesh Salve" class="member-avatar">
+                    <div class="member-info">
+                        <h3>Dr. Harshal Ramesh Salve</h3>
+                        <div class="member-role-badge">Co-Principal Investigator</div>
+                    </div>
+                </div>
+                <div class="member-title">Community Medicine Specialist</div>
                 <div class="member-affiliation">
-                    Centre for Community Medicine<br>
-                    AIIMS New Delhi
+                    Additional Professor<br>
+                    Centre for Community Medicine, AIIMS New Delhi
                 </div>
             </div>
 
             <div class="team-card">
-                <h3>Dr. Bhavesh Modi</h3>
-                <div class="member-title">Scientist G</div>
+                <div class="member-header">
+                    <img src="https://ui-avatars.com/api/?name=Bhavesh+Modi&background=e0e0e0&color=333&size=128" alt="Dr. Bhavesh Modi" class="member-avatar">
+                    <div class="member-info">
+                        <h3>Dr. Bhavesh Modi</h3>
+                        <div class="member-role-badge">Co-Principal Investigator</div>
+                    </div>
+                </div>
+                <div class="member-title">Occupational Health Scientist</div>
                 <div class="member-affiliation">
+                    Scientist G<br>
                     ICMR – National Institute of Occupational Health
                 </div>
             </div>
 
             <div class="team-card">
-                <h3>Prof. Debashis Dutt</h3>
-                <div class="member-title">Professor</div>
+                <div class="member-header">
+                    <img src="https://ui-avatars.com/api/?name=Debashis+Dutt&background=e0e0e0&color=333&size=128" alt="Prof. Debashis Dutt" class="member-avatar">
+                    <div class="member-info">
+                        <h3>Prof. Debashis Dutt</h3>
+                        <div class="member-role-badge">Co-Principal Investigator</div>
+                    </div>
+                </div>
+                <div class="member-title">Public Health Administration Expert</div>
                 <div class="member-affiliation">
-                    Public Health Administration<br>
+                    Professor, Public Health Administration<br>
                     AIIH&PH
                 </div>
             </div>
 
             <div class="team-card">
-                <h3>Dr. Manas Kumar Kundu</h3>
-                <div class="member-title">Director</div>
+                <div class="member-header">
+                    <img src="https://ui-avatars.com/api/?name=Manas+Kumar+Kundu&background=e0e0e0&color=333&size=128" alt="Dr. Manas Kumar Kundu" class="member-avatar">
+                    <div class="member-info">
+                        <h3>Dr. Manas Kumar Kundu</h3>
+                        <div class="member-role-badge">Co-Principal Investigator</div>
+                    </div>
+                </div>
+                <div class="member-title">Epidemiology Expert</div>
                 <div class="member-affiliation">
-                    Department of Epidemiology<br>
+                    Director, Department of Epidemiology<br>
                     AIIH&PH
                 </div>
             </div>
 
             <div class="team-card">
-                <h3>Dr. Ankit Mayurkumar Sheth</h3>
-                <div class="member-title">Scientist E</div>
+                <div class="member-header">
+                    <img src="https://ui-avatars.com/api/?name=Ankit+Mayurkumar+Sheth&background=e0e0e0&color=333&size=128" alt="Dr. Ankit Mayurkumar Sheth" class="member-avatar">
+                    <div class="member-info">
+                        <h3>Dr. Ankit Mayurkumar Sheth</h3>
+                        <div class="member-role-badge">Co-Principal Investigator</div>
+                    </div>
+                </div>
+                <div class="member-title">Research Scientist</div>
                 <div class="member-affiliation">
+                    Scientist E<br>
                     ICMR – NIOH
                 </div>
             </div>
 
             <div class="team-card">
-                <h3>Prof. Ranjan Das</h3>
-                <div class="member-title">Director</div>
+                <div class="member-header">
+                    <img src="https://ui-avatars.com/api/?name=Ranjan+Das&background=e0e0e0&color=333&size=128" alt="Prof. Ranjan Das" class="member-avatar">
+                    <div class="member-info">
+                        <h3>Prof. Ranjan Das</h3>
+                        <div class="member-role-badge">Co-Principal Investigator</div>
+                    </div>
+                </div>
+                <div class="member-title">Disease Control Specialist</div>
                 <div class="member-affiliation">
+                    Director<br>
                     National Centre for Disease Control
                 </div>
             </div>
 
             <div class="team-card">
-                <h3>Prof. Jhareswar Maiti</h3>
-                <div class="member-title">Professor</div>
+                <div class="member-header">
+                    <img src="https://ui-avatars.com/api/?name=Jhareswar+Maiti&background=e0e0e0&color=333&size=128" alt="Prof. Jhareswar Maiti" class="member-avatar">
+                    <div class="member-info">
+                        <h3>Prof. Jhareswar Maiti</h3>
+                        <div class="member-role-badge">Co-Principal Investigator</div>
+                    </div>
+                </div>
+                <div class="member-title">Engineering & Safety Analytics Expert</div>
                 <div class="member-affiliation">
+                    Professor<br>
                     IIT Kharagpur
                 </div>
             </div>
 
             <div class="team-card">
-                <h3>Dr. Merlyn Joseph</h3>
-                <div class="member-title">Assistant Professor</div>
+                <div class="member-header">
+                    <img src="https://ui-avatars.com/api/?name=Merlyn+Joseph&background=e0e0e0&color=333&size=128" alt="Dr. Merlyn Joseph" class="member-avatar">
+                    <div class="member-info">
+                        <h3>Dr. Merlyn Joseph</h3>
+                        <div class="member-role-badge">Co-Principal Investigator</div>
+                    </div>
+                </div>
+                <div class="member-title">Medical & Health Professional</div>
                 <div class="member-affiliation">
+                    Assistant Professor<br>
                     St. John's Medical College Hospital
                 </div>
             </div>
 
             <div class="team-card">
-                <h3>Prof. Bobby Joseph</h3>
-                <div class="member-title">Professor</div>
+                <div class="member-header">
+                    <img src="https://ui-avatars.com/api/?name=Bobby+Joseph&background=e0e0e0&color=333&size=128" alt="Prof. Bobby Joseph" class="member-avatar">
+                    <div class="member-info">
+                        <h3>Prof. Bobby Joseph</h3>
+                        <div class="member-role-badge">Co-Principal Investigator</div>
+                    </div>
+                </div>
+                <div class="member-title">Occupational Health Professor</div>
                 <div class="member-affiliation">
-                    Division of Occupational Health<br>
+                    Professor, Division of Occupational Health<br>
                     St. John's Medical College Hospital
                 </div>
             </div>
         </div>
     </section>
 
-    <section id="contact">
-        <div class="section-header">
-            <h2>Get in Touch</h2>
-            <p>For collaboration and project information, please contact the Principal Investigator or the Lead AI/ML Scientist through their respective institutions.</p>
-            <br>
-            <a href="mailto:contact@example.com" class="btn">Contact Us</a>
-        </div>
+    <section id="contact" class="contact-box">
+        <h2>Get in Touch</h2>
+        <p>For collaboration and project information, please contact the Principal Investigator or the Lead AI/ML Scientist.</p>
+        <p style="font-weight: 700; font-size: 1.3rem;">chayaicmr@gmail.com</p>
+        <a href="mailto:chayaicmr@gmail.com" class="btn">Send an Email</a>
     </section>
 
     <footer>
-        <h4>CHAYA</h4>
+        <h4>CHAYA Research Consortium</h4>
         <p>Climate Health Adaptation for Workers through AI-Driven Digital Twin Heat Risk Prediction</p>
         <div class="copyright">
-            © 2026 CHAYA Research Consortium. All rights reserved.
+            © 2026 CHAYA Initiative. All rights reserved.
         </div>
     </footer>
 
