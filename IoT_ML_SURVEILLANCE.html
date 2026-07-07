@@ -218,7 +218,6 @@
     const markers = {};
     nodes.forEach(n => {
       const m = L.circleMarker([n.lat, n.lng], { radius: 8, color: '#3b82f6', fillColor: '#3b82f6', fillOpacity: 0.6, weight: 2 }).addTo(map);
-      m.bindTooltip("", { permanent: true, direction: 'right', className: 'custom-tooltip', opacity: 1 });
       markers[n.id] = m;
       m.on('click', () => { map.setView([n.lat, n.lng], 17); highlightNode(n.id); });
     });
@@ -392,15 +391,27 @@
         
         m.setStyle({ color: color, fillColor: color, weight: isSel?4:2, radius: isSel?10:8 });
         
-        // Build tooltip content directly visible on map
-        let ttHtml = `<div class="text-[11px] font-sans"><strong>${n.name}</strong>`;
-        if(n.lastCommand) {
-            ttHtml += `<div class="mt-1 p-1 bg-indigo-100 text-indigo-800 rounded border border-indigo-200 font-bold max-w-[120px] whitespace-normal leading-tight">⚠️ ${n.lastCommand}</div>`;
-        } else if (n.envTemp > 38) {
-            ttHtml += `<div class="mt-1 text-red-600 font-bold animate-pulse">⚠️ HIGH TEMP</div>`;
+        // Show tooltip only if there is a warning or command
+        let hasAlert = n.lastCommand || n.envTemp > 38;
+        if (hasAlert) {
+            let ttHtml = `<div class="text-[11px] font-sans"><strong>${n.name}</strong>`;
+            if(n.lastCommand) {
+                ttHtml += `<div class="mt-1 p-1 bg-indigo-100 text-indigo-800 rounded border border-indigo-200 font-bold max-w-[120px] whitespace-normal leading-tight">⚠️ ${n.lastCommand}</div>`;
+            } else if (n.envTemp > 38) {
+                ttHtml += `<div class="mt-1 text-red-600 font-bold animate-pulse">⚠️ HIGH TEMP</div>`;
+            }
+            ttHtml += `</div>`;
+            
+            if (!m.getTooltip()) {
+                m.bindTooltip(ttHtml, { permanent: true, direction: 'right', className: 'custom-tooltip', opacity: 1 });
+            } else {
+                m.setTooltipContent(ttHtml);
+            }
+        } else {
+            if (m.getTooltip()) {
+                m.unbindTooltip();
+            }
         }
-        ttHtml += `</div>`;
-        m.setTooltipContent(ttHtml);
       });
 
       const labels = makeLabels(maxPoints);
