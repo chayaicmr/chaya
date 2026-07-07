@@ -51,6 +51,15 @@
     ::-webkit-scrollbar-track { background: transparent; }
     ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
     ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+    
+    .custom-tooltip {
+        background-color: rgba(255, 255, 255, 0.95);
+        border: 1px solid rgba(0,0,0,0.1);
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        padding: 6px 10px;
+        font-family: 'Inter', sans-serif;
+    }
   </style>
 </head>
 <body class="p-4 lg:p-8">
@@ -209,6 +218,7 @@
     const markers = {};
     nodes.forEach(n => {
       const m = L.circleMarker([n.lat, n.lng], { radius: 8, color: '#3b82f6', fillColor: '#3b82f6', fillOpacity: 0.6, weight: 2 }).addTo(map);
+      m.bindTooltip("", { permanent: true, direction: 'right', className: 'custom-tooltip', opacity: 1 });
       markers[n.id] = m;
       m.on('click', () => { map.setView([n.lat, n.lng], 17); highlightNode(n.id); });
     });
@@ -382,15 +392,15 @@
         
         m.setStyle({ color: color, fillColor: color, weight: isSel?4:2, radius: isSel?10:8 });
         
-        // Build popup content
-        let popupHtml = `<div class="text-sm font-sans"><strong>${n.name}</strong><br/>Env: <span class="${n.envTemp>38?'text-red-500 font-bold':''}">${n.envTemp.toFixed(1)}°C</span><br/>Core: ${n.bodyTemp.toFixed(1)}°C</div>`;
+        // Build tooltip content directly visible on map
+        let ttHtml = `<div class="text-[11px] font-sans"><strong>${n.name}</strong>`;
         if(n.lastCommand) {
-            popupHtml += `<div class="mt-2 p-1.5 bg-indigo-50 border border-indigo-100 rounded text-xs text-indigo-700">
-                <strong class="block uppercase text-[9px] mb-0.5">Remote Instruction</strong>
-                "${n.lastCommand}"
-            </div>`;
+            ttHtml += `<div class="mt-1 p-1 bg-indigo-100 text-indigo-800 rounded border border-indigo-200 font-bold max-w-[120px] whitespace-normal leading-tight">⚠️ ${n.lastCommand}</div>`;
+        } else if (n.envTemp > 38) {
+            ttHtml += `<div class="mt-1 text-red-600 font-bold animate-pulse">⚠️ HIGH TEMP</div>`;
         }
-        m.setPopupContent(popupHtml);
+        ttHtml += `</div>`;
+        m.setTooltipContent(ttHtml);
       });
 
       const labels = makeLabels(maxPoints);
