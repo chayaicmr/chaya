@@ -43,7 +43,8 @@
     .charts-grid { display: grid; grid-template-columns: repeat(1, 1fr); gap: 16px; }
     @media(min-width: 1024px) { .charts-grid { grid-template-columns: repeat(2, 1fr); } }
     .stacked-chart { height: 180px; width: 100%; }
-    .node-list { max-height: 280px; overflow-y: auto; padding-right: 8px; }
+    .node-list { max-height: 220px; overflow-y: auto; padding-right: 8px; }
+    .log-list { max-height: 120px; overflow-y: auto; }
     
     /* Custom Scrollbar */
     ::-webkit-scrollbar { width: 6px; }
@@ -62,7 +63,7 @@
     <header class="mb-6 glass-panel p-6 flex flex-col md:flex-row md:items-center justify-between">
       <div>
         <h1 class="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-pink-500">CHAYA Digital Twin Platform</h1>
-        <p class="text-sm text-slate-500 mt-1">Live In-Situ Telemetry & AI Inference Engine Dashboard</p>
+        <p class="text-sm text-slate-500 mt-1">Live In-Situ Telemetry, AI Inference, & Bidirectional Control Dashboard</p>
       </div>
       <div class="text-xs text-slate-400 mt-3 md:mt-0 text-right">
         Chief AI Scientist:<br><strong class="text-slate-600">Dr. Arkaprabha Sau</strong>
@@ -80,24 +81,42 @@
           <button id="btnPause" class="flex-1 px-3 py-2 bg-slate-200 text-slate-700 text-sm font-medium rounded-lg shadow hover:bg-slate-300 transition">Pause</button>
         </div>
 
-        <div class="mb-6">
-          <label class="block text-xs font-semibold text-slate-500 uppercase mb-2">Simulate Heat Event</label>
-          <button id="btnPulse" class="w-full px-3 py-2 bg-pink-50 text-pink-600 border border-pink-200 text-sm font-medium rounded-lg shadow-sm hover:bg-pink-100 transition">Inject Thermal Spike</button>
-        </div>
-
         <div class="mb-6 flex-1 flex flex-col">
           <label class="block text-xs font-semibold text-slate-500 uppercase mb-2">Active Worker Nodes</label>
           <ul id="nodeList" class="node-list flex-1 space-y-2 text-sm"></ul>
         </div>
+        
+        <div class="mt-4 pt-4 border-t border-slate-200">
+          <label class="block text-xs font-semibold text-slate-500 uppercase mb-2">Simulate Heat Event</label>
+          <button id="btnPulse" class="w-full px-3 py-2 bg-pink-50 text-pink-600 border border-pink-200 text-sm font-medium rounded-lg shadow-sm hover:bg-pink-100 transition">Inject Thermal Spike</button>
+        </div>
       </aside>
 
-      <!-- Main Visualizations (Center) -->
+      <!-- Main Visualizations & Bidirectional Control (Center) -->
       <section class="lg:col-span-6 flex flex-col gap-6">
         
         <!-- Map -->
         <div class="glass-panel p-5">
-          <h2 class="font-semibold text-blue-600 uppercase text-xs tracking-wider mb-3">Geospatial Distribution</h2>
+          <h2 class="font-semibold text-blue-600 uppercase text-xs tracking-wider mb-3 flex justify-between">
+            <span>Geospatial Distribution</span>
+            <span class="text-[10px] bg-blue-100 text-blue-600 px-2 py-0.5 rounded-full animate-pulse">Bidirectional Comm Active</span>
+          </h2>
           <div id="map"></div>
+        </div>
+
+        <!-- Bidirectional Control Panel -->
+        <div class="glass-panel p-5 bg-gradient-to-br from-white/70 to-blue-50/50">
+          <h2 class="font-semibold text-indigo-600 uppercase text-xs tracking-wider mb-3">Bidirectional Control (Edge Command)</h2>
+          <div class="flex gap-2 mb-3">
+            <input type="text" id="commandInput" class="flex-1 px-3 py-2 text-sm rounded-lg border border-slate-300 focus:ring-2 focus:ring-indigo-500 outline-none" placeholder="Enter remote instruction (e.g. 'Evacuate immediately', 'Take water break')">
+            <button id="btnSendCommand" class="px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded-lg shadow-md hover:bg-indigo-700 transition">Send to Node</button>
+          </div>
+          <div class="bg-white/80 rounded-lg p-2 border border-slate-200">
+            <h3 class="text-[10px] font-bold text-slate-400 uppercase mb-1">Transmission Log</h3>
+            <ul id="commandLog" class="log-list text-xs space-y-1 text-slate-600 font-mono">
+              <li class="italic text-slate-400">No commands transmitted yet.</li>
+            </ul>
+          </div>
         </div>
 
         <!-- AI Predictions -->
@@ -177,7 +196,8 @@
       const lng = baseLng + Math.sin(angle)*r + (Math.random()-0.5)*0.0005;
       nodes.push({ id:'node-'+(i+1), name:nodeNames[i], lat, lng,
         envTemp: 32 + (Math.random()*6 - 1.5), hum: 40 + Math.random()*25, aqi: 80 + Math.random()*60,
-        bodyTemp: 36.6 + Math.random()*0.4, hr: 72 + Math.random()*15, history: []
+        bodyTemp: 36.6 + Math.random()*0.4, hr: 72 + Math.random()*15, history: [],
+        lastCommand: null, commandTime: null
       });
     }
 
@@ -189,9 +209,8 @@
     const markers = {};
     nodes.forEach(n => {
       const m = L.circleMarker([n.lat, n.lng], { radius: 8, color: '#3b82f6', fillColor: '#3b82f6', fillOpacity: 0.6, weight: 2 }).addTo(map);
-      m.bindPopup(`<div class="text-sm"><strong>${n.name}</strong><br/>Env: ${n.envTemp.toFixed(1)}°C<br/>Core: ${n.bodyTemp.toFixed(1)}°C</div>`);
-      m.on('click', () => { map.setView([n.lat, n.lng], 17); highlightNode(n.id); });
       markers[n.id] = m;
+      m.on('click', () => { map.setView([n.lat, n.lng], 17); highlightNode(n.id); });
     });
 
     // --------------- UI Updates ---------------
@@ -231,6 +250,30 @@
     }
 
     function highlightNode(id) { selectedNode = id; renderNodeList(); }
+
+    // --------------- Bidirectional Comm ---------------
+    const cmdInput = document.getElementById('commandInput');
+    const cmdLog = document.getElementById('commandLog');
+    
+    document.getElementById('btnSendCommand').onclick = () => {
+      const text = cmdInput.value.trim();
+      if(!text) return;
+      const n = nodes.find(x => x.id === selectedNode);
+      if(!n) return;
+
+      n.lastCommand = text;
+      n.commandTime = new Date().toLocaleTimeString();
+
+      // Clear empty state
+      if(cmdLog.innerHTML.includes("No commands")) cmdLog.innerHTML = '';
+      
+      const li = document.createElement('li');
+      li.innerHTML = `<span class="text-indigo-500">[${n.commandTime}]</span> <span class="font-semibold">TX -> ${n.name}:</span> "${text}" <span class="text-green-500 text-[10px] ml-1">✓ ACK</span>`;
+      cmdLog.prepend(li);
+
+      cmdInput.value = '';
+      tick(); // force UI update immediately
+    };
 
     // --------------- Charts Setup ---------------
     const maxPoints = 40; 
@@ -338,7 +381,16 @@
         else if(n.envTemp > 36) color = '#f97316';
         
         m.setStyle({ color: color, fillColor: color, weight: isSel?4:2, radius: isSel?10:8 });
-        m.setPopupContent(`<div class="text-sm font-sans"><strong>${n.name}</strong><br/>Env: <span class="${n.envTemp>38?'text-red-500 font-bold':''}">${n.envTemp.toFixed(1)}°C</span><br/>Core: ${n.bodyTemp.toFixed(1)}°C</div>`);
+        
+        // Build popup content
+        let popupHtml = `<div class="text-sm font-sans"><strong>${n.name}</strong><br/>Env: <span class="${n.envTemp>38?'text-red-500 font-bold':''}">${n.envTemp.toFixed(1)}°C</span><br/>Core: ${n.bodyTemp.toFixed(1)}°C</div>`;
+        if(n.lastCommand) {
+            popupHtml += `<div class="mt-2 p-1.5 bg-indigo-50 border border-indigo-100 rounded text-xs text-indigo-700">
+                <strong class="block uppercase text-[9px] mb-0.5">Remote Instruction</strong>
+                "${n.lastCommand}"
+            </div>`;
+        }
+        m.setPopupContent(popupHtml);
       });
 
       const labels = makeLabels(maxPoints);
