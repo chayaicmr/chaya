@@ -439,6 +439,154 @@
                 padding: 2rem;
             }
         }
+        /* Horizontal Timeline Section */
+        .timeline-container {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: flex-start;
+            position: relative;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 0;
+            gap: 1.5rem;
+            overflow-x: auto;
+            padding-bottom: 2rem;
+        }
+
+        .timeline-container::after {
+            content: '';
+            position: absolute;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent-blue), var(--accent-pink));
+            top: calc(2rem + 12px);
+            left: 0;
+            right: 0;
+            border-radius: 4px;
+            z-index: 0;
+        }
+
+        .timeline-item {
+            flex: 1;
+            min-width: 250px;
+            position: relative;
+            background-color: inherit;
+            padding-top: 50px;
+        }
+
+        .timeline-item::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background-color: white;
+            border: 4px solid var(--accent-blue);
+            top: 0px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-radius: 50%;
+            z-index: 1;
+            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.2);
+        }
+
+        .timeline-item.active-phase::after {
+            border: 4px solid #10b981;
+            animation: pulse-glow-green 2s infinite;
+            background-color: #10b981;
+            box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.2);
+        }
+
+        .timeline-content {
+            padding: 1.5rem;
+            position: relative;
+            border-radius: 16px;
+            text-align: center;
+        }
+        
+        .timeline-date {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--accent-blue);
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .timeline-item:nth-child(even) .timeline-date { color: var(--accent-pink); }
+        .timeline-item:nth-child(even)::after { border-color: var(--accent-pink); box-shadow: 0 0 0 4px rgba(236, 72, 153, 0.2); }
+
+        .timeline-title {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 0.5rem;
+        }
+
+        .timeline-desc {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        @keyframes pulse-glow-green {
+            0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
+            70% { box-shadow: 0 0 0 15px rgba(16, 185, 129, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+        }
+        
+        .active-phase .timeline-content {
+            border: 2px solid #10b981;
+            background: rgba(255,255,255,0.9);
+            box-shadow: 0 0 20px rgba(16, 185, 129, 0.15);
+        }
+        
+        .status-badge {
+            display: inline-block;
+            background: linear-gradient(90deg, #10b981, #34d399);
+            color: white;
+            padding: 0.2rem 0.6rem;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 10px;
+            vertical-align: middle;
+            animation: blink 2.5s infinite;
+            box-shadow: 0 2px 10px rgba(16, 185, 129, 0.3);
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        @media (max-width: 768px) {
+            .timeline-container {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .timeline-container::after {
+                width: 4px;
+                height: auto;
+                bottom: 0;
+                top: 2rem;
+                left: 31px;
+                right: auto;
+            }
+            .timeline-item {
+                width: 100%;
+                padding-left: 70px;
+                padding-top: 0;
+                padding-bottom: 2rem;
+            }
+            .timeline-item::after {
+                top: 0px;
+                left: 17px;
+                transform: none;
+            }
+            .timeline-content { text-align: left; }
+        }
     </style>
 </head>
 <body>
@@ -454,7 +602,10 @@
         <nav>
             <a href="#about">Research</a>
             <a href="#architecture">Architecture</a>
+            <a href="#timeline">Timeline</a>
+            <a href="#notifications">Notifications</a>
             <a href="#team">Investigators</a>
+            <a href="#collaborators">Collaborating Institutes</a>
             <a href="#contact">Contact</a>
         </nav>
     </header>
@@ -538,6 +689,70 @@
 
         <div class="iframe-container glass-panel">
             <iframe src="./IoT_ML_SURVEILLANCE.html" title="Digital Twin Simulation" style="width:100%; height:100%; border:none;"></iframe>
+        </div>
+    </section>
+
+    <section id="timeline">
+        <div class="section-header">
+            <h2>Implementation Timeline</h2>
+            <p>Real-time progress and structured milestones for the CHAYA Initiative deployment.</p>
+        </div>
+        
+        <div class="timeline-container">
+            <div class="timeline-item active-phase">
+                <div class="timeline-content glass-panel">
+                    <div class="timeline-date">Phase One: Main Activity <br><span class="status-badge">Current Activity</span></div>
+                    <div class="timeline-title">Hiring & Procurement</div>
+                    <div class="timeline-desc">Hiring of manpower across sites, securing ethical clearances, and prototype development of the digital twin and sensory array.</div>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-content glass-panel">
+                    <div class="timeline-date">Phase Two: Upcoming</div>
+                    <div class="timeline-title">Site Prep & Deployment</div>
+                    <div class="timeline-desc">Initial calibration of the sensory array in designated occupational zones and edge-telemetry testing.</div>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-content glass-panel">
+                    <div class="timeline-date">Phase Three: Mid-Term</div>
+                    <div class="timeline-title">Model Training & Integration</div>
+                    <div class="timeline-desc">Fusing biometric streams with environmental data to train ML models and activate dashboard.</div>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-content glass-panel">
+                    <div class="timeline-date">Phase Four: Long-Term</div>
+                    <div class="timeline-title">Validation & Policy</div>
+                    <div class="timeline-desc">Validating heat-illness predictions and finalizing evidence-based safety guidelines.</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="notifications">
+        <div class="section-header">
+            <h2>Notifications & Updates</h2>
+            <p>Latest announcements regarding recruitment, procurement, and project milestones.</p>
+        </div>
+
+        <div class="cards" style="grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));">
+            <div class="card glass-panel">
+                <h3>Notification for Hiring of Manpower</h3>
+                <ul style="list-style-type: none; padding-top: 1rem;">
+                    <li style="margin-bottom: 0.8rem; padding-bottom: 0.8rem; border-bottom: 1px dashed rgba(0,0,0,0.1);"><a href="#" style="text-decoration: none; color: var(--accent-blue); font-weight: 500;">AIIH&PH <span style="font-size: 0.75rem; color: #f59e0b; margin-left: 5px; font-weight: 600;">[Upcoming soon]</span></a></li>
+                    <li style="margin-bottom: 0.8rem; padding-bottom: 0.8rem; border-bottom: 1px dashed rgba(0,0,0,0.1);"><a href="#" style="text-decoration: none; color: var(--accent-blue); font-weight: 500;">AIIMS <span style="font-size: 0.75rem; color: #f59e0b; margin-left: 5px; font-weight: 600;">[Upcoming soon]</span></a></li>
+                    <li style="margin-bottom: 0.8rem; padding-bottom: 0.8rem; border-bottom: 1px dashed rgba(0,0,0,0.1);"><a href="#" style="text-decoration: none; color: var(--accent-blue); font-weight: 500;">NIOHR <span style="font-size: 0.75rem; color: #f59e0b; margin-left: 5px; font-weight: 600;">[Upcoming soon]</span></a></li>
+                    <li><a href="#" style="text-decoration: none; color: var(--accent-blue); font-weight: 500;">St. John's Medical College Hospital, Bengaluru <span style="font-size: 0.75rem; color: #f59e0b; margin-left: 5px; font-weight: 600;">[Upcoming soon]</span></a></li>
+                </ul>
+            </div>
+            
+            <div class="card glass-panel">
+                <h3>Procurement of Product and Services</h3>
+                <div style="margin-top: 1.5rem; padding: 2rem; background: rgba(0,0,0,0.03); border-radius: 8px; text-align: center; border: 1px dashed rgba(0,0,0,0.1);">
+                    <p style="font-weight: 600; color: var(--text-muted); margin: 0; font-size: 1.1rem;">⏳ Upcoming soon</p>
+                </div>
+            </div>
         </div>
     </section>
 
@@ -672,7 +887,7 @@
                 <div class="member-title">Occupational Health Expert</div>
                 <div class="member-affiliation">
                     Professor, Division of Occupational Health<br>
-                    St. John's Medical College Hospital
+                    St. John's Medical College Hospital, Bengaluru
                 </div>
             </div>
 
@@ -700,9 +915,19 @@
                 <div class="member-title">Occupational Health Expert</div>
                 <div class="member-affiliation">
                     Assistant Professor<br>
-                    St. John's Medical College Hospital
+                    St. John's Medical College Hospital, Bengaluru
                 </div>
             </div>
+        </div>
+    </section>
+
+    <section id="collaborators">
+        <div class="section-header">
+            <h2>Study Collaboration Institutes</h2>
+            <p>Our network of prestigious partner institutions across India driving the multicentric implementation of the CHAYA Initiative.</p>
+        </div>
+        <div class="glass-panel" style="padding: 2rem; display: flex; justify-content: center; align-items: center;">
+            <img src="./STUDY_COLLABORATION_INSTITUTES.png" alt="Study Collaboration Institutes" style="max-width: 100%; height: auto; border-radius: 12px; box-shadow: 0 8px 32px rgba(31, 38, 135, 0.1);">
         </div>
     </section>
 
