@@ -76,6 +76,7 @@
             display: flex;
             align-items: center;
             gap: 12px;
+            flex-shrink: 0;
         }
 
         .logo-text {
@@ -85,6 +86,7 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             letter-spacing: 1px;
+            white-space: nowrap;
         }
 
         .logo-icon {
@@ -95,9 +97,10 @@
         nav a {
             color: var(--text-main);
             text-decoration: none;
-            margin-left: 2rem;
+            margin-left: 1.2rem;
             font-weight: 500;
-            font-size: 0.95rem;
+            font-size: 0.85rem;
+            white-space: nowrap;
             transition: color 0.3s;
         }
 
@@ -315,7 +318,7 @@
         /* Team Section */
         .team-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 2rem;
         }
 
@@ -428,15 +431,41 @@
             header {
                 padding: 1rem;
                 width: 95%;
+                flex-direction: column;
+                gap: 1rem;
+                border-radius: 16px;
             }
             nav {
+                display: flex;
+                overflow-x: auto;
+                width: 100%;
+                padding-bottom: 0.5rem;
+                scrollbar-width: none;
+                justify-content: flex-start;
+                -webkit-overflow-scrolling: touch;
+            }
+            nav::-webkit-scrollbar {
                 display: none;
             }
+            nav a {
+                margin-left: 0;
+                margin-right: 1.5rem;
+                font-size: 0.9rem;
+            }
             .hero {
-                padding: 120px 5% 60px;
+                padding: 160px 5% 60px;
             }
             .hero-content {
                 padding: 2rem;
+            }
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+            .hero h2 {
+                font-size: 1.1rem;
+            }
+            .logo-container img {
+                height: 35px !important;
             }
         }
         /* Horizontal Timeline Section */
@@ -597,6 +626,7 @@
 
     <header class="glass-panel">
         <div class="logo-container">
+            <img src="./CHAYA_LOGO.png" alt="CHAYA Logo" style="height: 45px; width: auto; object-fit: contain;">
             <div class="logo-text">Project Chaya</div>
         </div>
         <nav>
@@ -612,7 +642,9 @@
 
     <section class="hero">
         <div class="hero-content glass-panel">
-            <h1><span style="color: #FF9933; background: none; -webkit-text-fill-color: initial; display: inline;">Project</span> <span>Chaya</span></h1>
+            <div style="text-align: center; margin-bottom: 1.5rem;">
+                <img src="./CHAYA.png" alt="Project Chaya" style="max-width: 100%; height: auto; max-height: 150px; object-fit: contain;">
+            </div>
             <h2>(CHAYA): Climate-Health Heat Adaptation through AI-enabled Digital Twin based Risk Prediction and Peer-Support Systems for Workers Safety & Yield– A Multicentric Implementation Research Study</h2>
             <p>A multidisciplinary research initiative integrating Artificial Intelligence, Digital Twins, IoT, Occupational Health, and Climate Science to pioneer heat-illness prediction and prevention.</p>
             <div style="margin-top: 1.5rem; margin-bottom: 2.5rem; padding: 1.5rem; background: rgba(59, 130, 246, 0.05); border: 1px solid rgba(59, 130, 246, 0.2); border-radius: 12px; display: inline-block; max-width: 800px;">
@@ -821,49 +853,7 @@
                 </div>
             </div>
 
-            <!-- 5. Prof. Debashis Dutt -->
-            <div class="team-card glass-panel">
-                <img src="./DEBASISHDATT.jpeg" alt="Prof. Debashis Dutt" class="member-avatar">
-                <div class="member-role-badge">Co-Principal Investigator</div>
-                <h3>Prof. (Dr.) Debashis Dutt</h3>
-                <div class="qualifications">MBBS, MD</div>
-                <div class="orcid">ORCID: 0000-0000-0000-0000</div>
-                <div class="member-title">Public Health Expert and Epidemiologist</div>
-                <div class="member-affiliation">
-                    Director-Professor, Public Health Administration<br>
-                    AIIH&PH, Ministry of Health and Family Welfare, Govt. of India
-                </div>
-            </div>
-
-            <!-- 6. Prof. Jhareswar Maiti -->
-            <div class="team-card glass-panel">
-                <img src="./JHARESWARMAITI.jpeg" alt="Prof. Jhareswar Maiti" class="member-avatar">
-                <div class="member-role-badge">Co-Principal Investigator</div>
-                <h3>Prof. (Dr.) Jhareswar Maiti</h3>
-                <div class="qualifications">PhD</div>
-                <div class="orcid"><a href="https://orcid.org/0000-0001-9546-5860" target="_blank" style="color: inherit; text-decoration: none;">ORCID: 0000-0001-9546-5860</a></div>
-                <div class="member-title">Engineering & Safety Analytics Specialist</div>
-                <div class="member-affiliation">
-                    Professor, Industrial and Systems Engineering<br>
-                    IIT Kharagpur
-                </div>
-            </div>
-
-            <!-- 7. Prof. Bobby Joseph -->
-            <div class="team-card glass-panel">
-                <img src="./BOBYJOSEPH.jpeg" alt="Prof. Bobby Joseph" class="member-avatar">
-                <div class="member-role-badge">Co-Principal Investigator</div>
-                <h3>Prof. (Dr.) Bobby Joseph</h3>
-                <div class="qualifications">MBBS, MD, DNB</div>
-                <div class="orcid">ORCID: 0000-0000-0000-0000</div>
-                <div class="member-title">Occupational Health Expert</div>
-                <div class="member-affiliation">
-                    Professor, Division of Occupational Health<br>
-                    St. John's Medical College Hospital, Bengaluru
-                </div>
-            </div>
-
-            <!-- 8. Dr. Harshal Ramesh Salve -->
+            <!-- 5. Dr. Harshal Ramesh Salve -->
             <div class="team-card glass-panel">
                 <img src="./HARSALRAMESHSALVE.jpeg" alt="Dr. Harshal Ramesh Salve" class="member-avatar">
                 <div class="member-role-badge">Co-Principal Investigator</div>
@@ -877,7 +867,63 @@
                 </div>
             </div>
 
-            <!-- 9. Dr. Manas Kumar Kundu -->
+            <!-- 6. Dr. Merlyn Joseph -->
+            <div class="team-card glass-panel">
+                <img src="./MERLYNJOSEPH.jpeg" alt="Dr. Merlyn Joseph" class="member-avatar">
+                <div class="member-role-badge">Co-Principal Investigator</div>
+                <h3>Dr. Merlyn Joseph</h3>
+                <div class="qualifications">MBBS, MD</div>
+                <div class="orcid">ORCID: 0000-0000-0000-0000</div>
+                <div class="member-title">Occupational Health Expert</div>
+                <div class="member-affiliation">
+                    Assistant Professor<br>
+                    St. John's Medical College Hospital, Bengaluru
+                </div>
+            </div>
+
+            <!-- 7. Prof. Debashis Dutt -->
+            <div class="team-card glass-panel">
+                <img src="./DEBASISHDATT.jpeg" alt="Prof. Debashis Dutt" class="member-avatar">
+                <div class="member-role-badge">Co-Principal Investigator</div>
+                <h3>Prof. (Dr.) Debashis Dutt</h3>
+                <div class="qualifications">MBBS, MD</div>
+                <div class="orcid">ORCID: 0000-0000-0000-0000</div>
+                <div class="member-title">Public Health Expert and Epidemiologist</div>
+                <div class="member-affiliation">
+                    Director-Professor, Public Health Administration<br>
+                    AIIH&PH, Ministry of Health and Family Welfare, Govt. of India
+                </div>
+            </div>
+
+            <!-- 8. Prof. Jhareswar Maiti -->
+            <div class="team-card glass-panel">
+                <img src="./JHARESWARMAITI.jpeg" alt="Prof. Jhareswar Maiti" class="member-avatar">
+                <div class="member-role-badge">Co-Principal Investigator</div>
+                <h3>Prof. (Dr.) Jhareswar Maiti</h3>
+                <div class="qualifications">PhD</div>
+                <div class="orcid"><a href="https://orcid.org/0000-0001-9546-5860" target="_blank" style="color: inherit; text-decoration: none;">ORCID: 0000-0001-9546-5860</a></div>
+                <div class="member-title">Engineering & Safety Analytics Specialist</div>
+                <div class="member-affiliation">
+                    Professor, Industrial and Systems Engineering<br>
+                    IIT Kharagpur
+                </div>
+            </div>
+
+            <!-- 9. Prof. Bobby Joseph -->
+            <div class="team-card glass-panel">
+                <img src="./BOBYJOSEPH.jpeg" alt="Prof. Bobby Joseph" class="member-avatar">
+                <div class="member-role-badge">Co-Principal Investigator</div>
+                <h3>Prof. (Dr.) Bobby Joseph</h3>
+                <div class="qualifications">MBBS, MD, DNB</div>
+                <div class="orcid">ORCID: 0000-0000-0000-0000</div>
+                <div class="member-title">Occupational Health Expert</div>
+                <div class="member-affiliation">
+                    Professor, Division of Occupational Health<br>
+                    St. John's Medical College Hospital, Bengaluru
+                </div>
+            </div>
+
+            <!-- 10. Dr. Manas Kumar Kundu -->
             <div class="team-card glass-panel">
                 <img src="./MANASKUNDU.jpeg" alt="Dr. Manas Kumar Kundu" class="member-avatar">
                 <div class="member-role-badge">Co-Principal Investigator</div>
@@ -891,7 +937,7 @@
                 </div>
             </div>
 
-            <!-- 10. Dr. Ankit Mayurkumar Sheth (Scientist F) -->
+            <!-- 11. Dr. Ankit Mayurkumar Sheth (Scientist F) -->
             <div class="team-card glass-panel">
                 <img src="./AnkitSheth.jpg" alt="Dr. Ankit Mayurkumar Sheth" class="member-avatar">
                 <div class="member-role-badge">Co-Principal Investigator</div>
@@ -902,20 +948,6 @@
                 <div class="member-affiliation">
                     Scientist F<br>
                     National Institute of Occupational Health Research (NIOHR), Ministry of Health and Family Welfare, Govt. of India
-                </div>
-            </div>
-
-            <!-- 11. Dr. Merlyn Joseph -->
-            <div class="team-card glass-panel">
-                <img src="./MERLYNJOSEPH.jpeg" alt="Dr. Merlyn Joseph" class="member-avatar">
-                <div class="member-role-badge">Co-Principal Investigator</div>
-                <h3>Dr. Merlyn Joseph</h3>
-                <div class="qualifications">MBBS, MD</div>
-                <div class="orcid">ORCID: 0000-0000-0000-0000</div>
-                <div class="member-title">Occupational Health Expert</div>
-                <div class="member-affiliation">
-                    Assistant Professor<br>
-                    St. John's Medical College Hospital, Bengaluru
                 </div>
             </div>
         </div>
