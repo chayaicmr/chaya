@@ -112,10 +112,12 @@
         .hero {
             min-height: 100vh;
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
             text-align: center;
             padding: 140px 20px 60px;
+            gap: 2rem;
         }
 
         .hero-content {
@@ -616,6 +618,44 @@
             }
             .timeline-content { text-align: left; }
         }
+
+        .announcement-bar {
+            background: linear-gradient(90deg, rgba(59, 130, 246, 0.15), rgba(236, 72, 153, 0.15));
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            color: var(--accent-blue);
+            padding: 12px 0;
+            overflow: hidden;
+            white-space: nowrap;
+            position: relative;
+            z-index: 999;
+            margin: 0 auto;
+            max-width: 90%;
+            width: 100%;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(31, 38, 135, 0.1);
+            display: flex;
+            align-items: center;
+        }
+        
+        .announcement-content {
+            display: inline-block;
+            padding-left: 100%;
+            animation: marquee 20s linear infinite;
+            font-weight: 600;
+            font-size: 1.05rem;
+            letter-spacing: 0.5px;
+        }
+
+        .announcement-content:hover {
+            animation-play-state: paused;
+        }
+
+        @keyframes marquee {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(-100%, 0); }
+        }
     </style>
 </head>
 <body>
@@ -641,6 +681,11 @@
     </header>
 
     <section class="hero">
+        <div class="announcement-bar">
+            <div class="announcement-content">
+                🚨 Announcement: We are going to Hire Project Scientist and Staff Soon
+            </div>
+        </div>
         <div class="hero-content glass-panel">
             <div style="text-align: center; margin-bottom: 1.5rem;">
                 <img src="./CHAYA.png" alt="Project Chaya" style="max-width: 100%; height: auto; max-height: 150px; object-fit: contain;">
